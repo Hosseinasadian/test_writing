@@ -9,11 +9,12 @@ use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Mockery\MockInterface;
 use Tests\TestCase;
 
 class PostTest extends TestCase
 {
-    use RefreshDatabase,ModelHelperTesting;
+    use RefreshDatabase, ModelHelperTesting;
 
     protected function model(): Model
     {
@@ -38,7 +39,7 @@ class PostTest extends TestCase
             ->hasTags($count)
             ->create();
 
-        $this->assertCount($count,$post->tags);
+        $this->assertCount($count, $post->tags);
         $this->assertTrue($post->tags->first() instanceof Tag);
     }
 
@@ -50,7 +51,7 @@ class PostTest extends TestCase
             ->hasComments($count)
             ->create();
 
-        $this->assertCount($count,$post->comments);
+        $this->assertCount($count, $post->comments);
         $this->assertTrue($post->comments->first() instanceof Comment);
     }
 
@@ -58,8 +59,27 @@ class PostTest extends TestCase
     {
         $post = Post::factory()->create();
 
-        $dor = new DurationOfReading($post->description);
+        $dor = new DurationOfReading();
+        $dor->setText($post->description);
 
-        $this->assertEquals($post->readingDuration,$dor->getTimePerMinute());
+        $this->assertEquals($post->readingDuration, $dor->getTimePerMinute());
+    }
+
+    public function testGetReadingDurationAttributeWithMocking()
+    {
+        $post = Post::factory()->create();
+
+        $mock = $this->mock(DurationOfReading::class, function (MockInterface $mock) use ($post) {
+            $mock->shouldReceive('setText')
+                ->with($post->description)
+                ->once()
+                ->andReturnSelf();
+
+            $mock->shouldReceive('getTimePerMinute')
+                ->once()
+                ->andReturn(20);
+        });
+
+        $this->assertEquals(20,$post->readingDuration);
     }
 }

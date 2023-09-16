@@ -35,8 +35,9 @@ class Post extends Model
     public function readingDuration():Attribute
     {
         return new Attribute(get:function(mixed $value, array $attributes){
-            $dor = new DurationOfReading($attributes['description']);
-            return $dor->getTimePerMinute();
+            return app(DurationOfReading::class)
+                ->setText($attributes['description'])
+                ->getTimePerMinute();
         });
     }
 }
