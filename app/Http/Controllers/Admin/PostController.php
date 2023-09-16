@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\PostRequest;
 use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class PostController extends Controller
 {
@@ -30,9 +32,17 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        //
+        $post = auth()->user()->posts()->create([
+            'title'=>$request->input('title'),
+            'description'=>$request->input('description'),
+            'image'=>$request->input('image'),
+        ]);
+
+        $post->tags()->attach($request->input('tags'));
+
+        return redirect(route('post.index'))->with('message','new post has been created');
     }
 
     /**
@@ -47,9 +57,15 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post)
+    public function update(PostRequest $request, Post $post)
     {
-        //
+        $post->update([
+            'title'=>$request->input('title'),
+            'description'=>$request->input('description'),
+            'image'=>$request->input('image'),
+        ]);
+        $post->tags()->sync($request->input('tags'));
+        return redirect(route('post.index'))->with('message', 'the post has been updated');
     }
 
     /**
@@ -57,6 +73,9 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $post->tags()->detach();
+        $post->comments()->delete();
+        $post->delete();
+        return redirect(route('post.index'))->with('message','the post has been deleted');
     }
 }

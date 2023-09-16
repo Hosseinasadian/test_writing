@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\TagController;
+use App\Http\Controllers\Admin\UploadImageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +23,8 @@ Route::post('/single/{post}/comment', [\App\Http\Controllers\SingleController::c
 
 Route::prefix('admin')->middleware('admin')->group(function (){
     Route::resource('post',\App\Http\Controllers\Admin\PostController::class)->except('show');
+    Route::resource('tag', TagController::class)->except(['show']);
+    Route::post('upload',[UploadImageController::class,'upload'])->name('upload');
 });
 
 Auth::routes();

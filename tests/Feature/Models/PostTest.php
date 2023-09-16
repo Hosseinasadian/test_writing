@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Models;
 
+use App\Helpers\DurationOfReading;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\Tag;
@@ -51,5 +52,14 @@ class PostTest extends TestCase
 
         $this->assertCount($count,$post->comments);
         $this->assertTrue($post->comments->first() instanceof Comment);
+    }
+
+    public function testGetReadingDurationAttribute()
+    {
+        $post = Post::factory()->create();
+
+        $dor = new DurationOfReading($post->description);
+
+        $this->assertEquals($post->readingDuration,$dor->getTimePerMinute());
     }
 }
