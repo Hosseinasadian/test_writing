@@ -15,8 +15,11 @@ class ExampleTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/')
-//                ->pause(5000)
-                ->assertSee('Laravel');
+                ->myAlert('Hello')
+                ->pause(2000)
+                ->assertDialogOpened('Hello')
+                ->acceptDialog()
+                ->pause(2000);
         });
     }
 }
