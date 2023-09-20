@@ -13,11 +13,12 @@ class UploadImageController extends Controller
             'image'=>'image|max:250|dimensions:max_width=100,max_height=200'
         ]);
         $image = $request->file('image');
+        $hashName = $image->hashName();
 
-        $image->move(public_path('/upload'),$image->hashName());
+        $image->move(public_path('/upload'),$hashName);
 
         return [
-            'url'=>"/upload/{$image->hashName()}"
+            'url'=>"/upload/{$hashName}"
         ];
     }
 }

@@ -24,8 +24,8 @@ class PostRequest extends FormRequest
         return [
             'title'=>'required',
             'description'=>'required|min:5',
-            'image'=>'required|url',
-            'tags'=>'required|array',
+            'image'=>'required',
+            'tags'=>'required',
             'tags.*'=>'exists:tags,id'
         ];
     }
