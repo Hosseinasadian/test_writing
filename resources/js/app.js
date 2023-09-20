@@ -1,7 +1,7 @@
 import './bootstrap';
 
-// import tinyDatePicker from 'tiny-date-picker';
-// tinyDatePicker({ input: document.querySelector('input.tiny-date-picker') });
+import tinyDatePicker from 'tiny-date-picker';
+tinyDatePicker({ input: document.querySelector('input.tiny-date-picker') });
 
 let postImageInput = document.getElementById('postImageInput');
 

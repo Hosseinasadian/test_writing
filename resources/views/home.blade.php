@@ -18,6 +18,9 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-4">
+            <input type="text" class="tiny-date-picker">
+        </div>
     </div>
 </div>
 @endsection

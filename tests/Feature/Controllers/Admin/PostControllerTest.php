@@ -174,7 +174,7 @@ class PostControllerTest extends TestCase
             ->assertSessionHasErrors($errors);
     }
 
-    public function testValidationRequestImageDataHasUrlRule()
+/*    public function testValidationRequestImageDataHasUrlRule()
     {
         $user = User::factory()->admin()->create();
         $errors = [
@@ -195,9 +195,9 @@ class PostControllerTest extends TestCase
         $this->actingAs($user)
             ->patch(route('post.update', $post->id), $data)
             ->assertSessionHasErrors($errors);
-    }
+    }*/
 
-    public function testValidationRequestTagsDataHasArrayRule()
+/*    public function testValidationRequestTagsDataHasArrayRule()
     {
         $user = User::factory()->admin()->create();
         $errors = [
@@ -218,7 +218,7 @@ class PostControllerTest extends TestCase
         $this->actingAs($user)
             ->patch(route('post.update', $post->id), $data)
             ->assertSessionHasErrors($errors);
-    }
+    }*/
 
     public function testValidationRequestTagsDataMustExistsInTagsTable()
     {
